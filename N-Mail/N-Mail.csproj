@@ -8,10 +8,11 @@
     <ProjectGuid>{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N_Mail</RootNamespace>
+    <RootNamespace>nMail</RootNamespace>
     <AssemblyName>N-Mail</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,22 +33,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attachment.cs" />
-    <Compile Include="imapClient.cs" />
-    <Compile Include="imapMail.cs" />
-    <Compile Include="imapMime.cs" />
+    <Compile Include="ImapClient.cs" />
+    <Compile Include="ImapMail.cs" />
+    <Compile Include="ImapMime.cs" />
     <Compile Include="Mail.cs" />
-    <Compile Include="mime.cs" />
-    <Compile Include="popClient.cs" />
+    <Compile Include="Mime.cs" />
+    <Compile Include="PopClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInformation.cs" />
   </ItemGroup>

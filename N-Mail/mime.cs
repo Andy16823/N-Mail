@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
 namespace nMail
 {
-    public class mime
+    public class Mime
     {
 
         /// <summary>
-        /// Prüft ob der Content Typ ein Mixed Multipart ist
+        /// Prüft, ob der Contenttyp ein MixedMultipart ist
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -32,29 +31,29 @@ namespace nMail
         }
         
         /// <summary>
-        /// Gibt den Content Typ der Mail zurück
+        /// Gibt den Contenttyp der Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getContetntTyp(List<String> mime)
+        public String getContentType(List<String> mime)
         {
-            String ContentTyp = "";
+            String ContentType = "";
 
             foreach (String item in mime)
             {
                 if (item.Contains("Content-Type:"))
                 {
                     Match match = Regex.Match(item, ".*\\:(?<content>.*)");
-                    ContentTyp = match.Groups["content"].Value;
+                    ContentType = match.Groups["content"].Value;
                     break;
                 }
             }
             
-            return ContentTyp;
+            return ContentType;
         }
         
         /// <summary>
-        /// prüft ob es in der mail einen Content-Type: multipart giebt
+        /// Prüft, ob die Mail vom Typ Multipart ist
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -74,14 +73,13 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft ob es in der Mail einen Plain Content giebt
+        /// Prüft ob die Mail vom Typ Plain ist
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
         public Boolean hasPlainText(List<String> mime)
         {
             Boolean hasPlain = false;
-            String mail;
 
             foreach (String item in mime)
             {
@@ -93,11 +91,10 @@ namespace nMail
 
             return hasPlain;
 
-            
         }
 
         /// <summary>
-        /// mit dieser funktion kann geprüft werden ob das Dokument einen html Content besitzt.
+        /// Mit dieser Funktion kann geprüft werden, ob das Dokument HTML-Content besitzt.
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -119,11 +116,12 @@ namespace nMail
         }
 
         /// <summary>
-        /// giebt den body der mail als text/plain zurück (Veraltet nicht Benutzen !! bitte nutzen Sie BodyPlain)
+        /// Gibt den Body der Mail als text/plain zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getBodyasPlaynText(List<String> mime)
+        [Obsolete("Bitte nutzen Sie die Funktion BodyPlain")]
+        public String getBodyAsPlainText(List<String> mime)
         {
 
             String keyword = "boundary";
@@ -133,7 +131,7 @@ namespace nMail
             int Start = 0;
             int Ende = 0;
 
-            // nach dem Bound Array Suchen
+            // nach dem Boundary suchen
 
             foreach (String item in mime)
             {
@@ -149,7 +147,7 @@ namespace nMail
 
 
 
-            // nach dem Content Suchen
+            // nach dem Contenttyp suchen
             foreach (String item in mime)
             {
 
@@ -163,8 +161,7 @@ namespace nMail
 
             }
 
-
-            // nach dem Ende Suchen
+            // nach dem Ende suchen
             for (int i = Start; i < mime.Count; i++)
             {
                 if (mime[i].Contains(boundary))
@@ -176,10 +173,10 @@ namespace nMail
 
 
 
-            // Prüfen ob es einen Start und Ende Wert giebt.
+            // Prüfen, ob es einen Start und Endewert gibt.
             if (Start != 0 && Ende != 0)
             {
-                // Text zwichen Start und Ende Ausgeben
+                // Text zwischen Start und Ende ausgeben
                 for (int i = Start; i < Ende; i++)
                 {
                     bdy += mime[i] + "\n";
@@ -189,15 +186,15 @@ namespace nMail
 
             return bdy;
 
-
         }
 
         /// <summary>
-        /// giebt den body der mail als html version zurück (Veraltet nicht Benutzen !! bitte nutzen Sie BodyHtml)
+        /// Gibt den Body der Mail als HTML-Text zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getBodyasHtmlText(List<String> mime)
+        [Obsolete("Bitte nutzen Sie die Funktion BodyHtml")]
+        public String getBodyAsHtmlText(List<String> mime)
         {
 
             String keyword = "boundary";
@@ -207,7 +204,7 @@ namespace nMail
             int Start = 0;
             int Ende = 0;
 
-            // nach dem Bound Array Suchen
+            // nach dem Boundary Suchen
 
             foreach (String item in mime)
             {
@@ -223,7 +220,7 @@ namespace nMail
 
 
 
-            // nach dem Content Suchen
+            // nach dem Content suchen
             foreach (String item in mime)
             {
 
@@ -238,7 +235,7 @@ namespace nMail
             }
 
 
-            // nach dem Ende Suchen
+            // nach dem Ende suchen
             for (int i = Start; i < mime.Count; i++)
             {
                 if (mime[i].Contains(boundary))
@@ -250,10 +247,10 @@ namespace nMail
 
 
 
-            // Prüfen ob es einen Start und Ende Wert giebt.
+            // Prüfen, ob es einen Start und Ende Wert giebt.
             if (Start != 0 && Ende != 0)
             {
-                // Text zwichen Start und Ende Ausgeben
+                // Text zwischen Start und Ende ausgeben
                 for (int i = Start; i < Ende; i++)
                 {
                     bdy += mime[i] + "\n";
@@ -268,7 +265,7 @@ namespace nMail
 
 
         /// <summary>
-        /// Giebt einen normalen Text ohne Multipart zurück
+        /// Gibt einen normalen Text ohne Multipart zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -302,7 +299,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// giebt den Betreff zurück
+        /// Gibt den Betreff zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -326,7 +323,7 @@ namespace nMail
 
 
         /// <summary>
-        /// giebt die absende addresse heraus.
+        /// Gibt die Absender-Adresse zurück.
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -351,7 +348,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// giebt den Empfänger der Mail zurück
+        /// Gibt den Empfänger der Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -375,13 +372,13 @@ namespace nMail
         }
 
         /// <summary>
-        /// giebt das empfangsdatum der mail zurück
+        /// Gibt das Empfangsdatum der Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getDeliverydate(List<String> mime)
+        public String getDeliveryDate(List<String> mime)
         {
-            String Deliverydate = "";
+            String deliverydate = "";
 
             foreach (String item in mime)
             {
@@ -389,18 +386,18 @@ namespace nMail
                 {
 
                     Match match = Regex.Match(item, ".*\\:(?<date>)");
-                    Deliverydate = match.Groups["date"].Value;
+                    deliverydate = match.Groups["date"].Value;
                     break;
 
                 }
             }
             
-            return Deliverydate;
+            return deliverydate;
             
         }
 
         /// <summary>
-        /// giebt das sende datum der mail zurück
+        /// Gibt das Sendedatum der Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -424,11 +421,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// giebt die Anzahl der dateianhänge zurück
+        /// Gibt die Anzahl der Dateianhänge zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public int getAttachmantCount(List<String> mime)
+        public int getAttachmentCount(List<String> mime)
         {
             int count = 0;
 
@@ -449,9 +446,9 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public List<Attachment> getAttachmants(List<String> mime, String boundarray)
+        public List<Attachment> getAttachments(List<String> mime, String boundary)
         {
-            int attachCount = getAttachmantCount(mime);
+            int attachCount = getAttachmentCount(mime);
             List<Attachment> attach = new List<Attachment>();
             
             int z = 0;
@@ -467,7 +464,7 @@ namespace nMail
                 {
                     Attachment att = new Attachment();
 
-                    // Start Zeile suchen
+                    // Startzeile suchen
                     for (int i = z; i < mime.Count; i++)
                     {
                         if (String.IsNullOrEmpty(mime[i]))
@@ -478,10 +475,10 @@ namespace nMail
 
                     }
 
-                    // End Zeile Suchen
+                    // Endzeile suchen
                     for (int i = start; i < mime.Count; i++)
                     {
-                        if (mime[i].Contains(boundarray))
+                        if (mime[i].Contains(boundary))
                         {
                             ende = i;
                             break;
@@ -498,7 +495,7 @@ namespace nMail
                         }
                     }
 
-                    // Suchen der Zeile mit dem encode typ
+                    // Suchen der Zeile mit dem Encode-Typ
                     for (int i = z; i < ende; i++)
                     {
                         if (mime[i].Contains("Content-Transfer-Encoding:"))
@@ -508,15 +505,15 @@ namespace nMail
                         }
                     }
 
-                    // Filename Pattern
+                    // Filename-Pattern
                     Match filenameMatch = Regex.Match(mime[fnameLine], ".*\\=(?<inner>.*)");
                     att.Name = filenameMatch.Groups["inner"].Value;
 
-                    // encodeTyp Pattern
+                    // Encode-Typ-Pattern
                     Match encodematch = Regex.Match(mime[encodeline], ".*\\:(?<inner>.*)");
-                    att.Encodebase = encodematch.Groups["inner"].Value;
+                    att.EncodeBase = encodematch.Groups["inner"].Value;
 
-                    // Bytes Auslesen
+                    // Bytes auslesen
                     String byteString = "";
                     for (int i = start; i < ende; i++)
                     {
@@ -524,9 +521,9 @@ namespace nMail
                     }
 
                     Byte[] attachbytes = Convert.FromBase64String(byteString);
-                    att.bytes = attachbytes;
+                    att.Bytes = attachbytes;
 
-                    // Att der Anhangsliste übergeben
+                    // Attachment der Anhangsliste übergeben
                     attach.Add(att);
                 }
 
@@ -535,16 +532,11 @@ namespace nMail
 
             }
 
-            // nun den namen des Attachments
-            
-
-
-
             return attach;
         }
 
         /// <summary>
-        /// Gibt die Mail in dem Mime Format zurück, sollte ein Fehler auftretten bitte diese Option Ausführen."
+        /// Gibt die Mail im Mime-Format zurück. Sollte ein Fehler auftreten, bitte diese Funktion ausführen."
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
@@ -561,43 +553,43 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt das Boundaray für die Anlagen zurück
+        /// Gibt das Boundary für die Anlagen zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getBoundarray(List<String> mime)
+        public String getBoundary(List<String> mime)
         {
-            String boundarray = "";
+            String boundary = "";
 
             foreach (String item in mime)
             {
                 if (item.Contains("boundary="))
                 {
                     Match match = Regex.Match(item, ".*\\=(?<inner>.*)");
-                    String boundarrayUnformattet = match.Groups["inner"].Value;
-                    if (boundarrayUnformattet.Contains('"'))
+                    String boundaryUnformatted = match.Groups["inner"].Value;
+                    if (boundaryUnformatted.Contains('"'))
                     {
                         Char[] chr = new Char[] {'\"'};
-                        boundarray = boundarrayUnformattet.Replace(chr[0].ToString(),String.Empty);
+                        boundary = boundaryUnformatted.Replace(chr[0].ToString(),String.Empty);
                     }
                     else
                     {
-                        boundarray = boundarrayUnformattet;
+                        boundary = boundaryUnformatted;
                     }
                 }
             }
 
-            return boundarray;
+            return boundary;
 
         }
 
         /// <summary>
-        /// Gibt den Html Body aus.
+        /// Gibt den Html-Body aus.
         /// </summary>
         /// <param name="mime"></param>
-        /// <param name="boundarray"></param>
+        /// <param name="boundary"></param>
         /// <returns></returns>
-        public String HtmlBody(List<String> mime, String boundarray)
+        public String HtmlBody(List<String> mime, String boundary)
         {
             String body = "";
             int z = 0;
@@ -609,10 +601,10 @@ namespace nMail
             {
                 if (item.Contains("Content-Type: text/html;"))
                 {
-                    // Ab der gefunden zeile durchlaufen bis der Content Beginnt.
+                    // Ab der gefundenen Zeile durchlaufen, bis der Content beginnt.
                     for (int i = z; i < mime.Count; i++)
                     {
-                        // Wenn eine Leere Zeile Vorkommt, Start zeile festlegen
+                        // Wenn eine leere Zeile vorkommt, Startzeile festlegen
                         if (String.IsNullOrEmpty(mime[i]))
                         {
                             Start = i;
@@ -620,28 +612,28 @@ namespace nMail
                         }
                     }
 
-                    // Ab der Startzeile durchlaufen bis das boundarray kommt
+                    // Ab der Startzeile durchlaufen, bis das Boundary kommt
                     for (int i = Start; i < mime.Count; i++)
                     {
-                        // wenn die Zeile das Boundarray Beiinhaltet End Zeile Deklarieren
-                        if (mime[i].Contains(boundarray))
+                        // Wenn die Zeile das Boundary beinhaltet, Endzeile bestimmen
+                        if (mime[i].Contains(boundary))
                         {
                             ende = i;
                             break;
                         }
                     }
 
-                    // wenn fertig dann unterbrechen
+                    // Wenn fertig, dann unterbrechen
                     break;
                     
                 }
 
-                // inkrement erhöhen
+                // Wert erhöhen
                 z++;
                     
             }
 
-            // body Ausgeben
+            // Body ausgeben
 
             for (int i = Start; i < ende; i++)
             {
@@ -656,9 +648,9 @@ namespace nMail
         /// Gibt den Body als text/plain zurück
         /// </summary>
         /// <param name="mime"></param>
-        /// <param name="boundarray"></param>
+        /// <param name="boundary"></param>
         /// <returns></returns>
-        public String PlainBody(List<String> mime, String boundarray)
+        public String PlainBody(List<String> mime, String boundary)
         {
             String Plain="";
             int z = 0;
@@ -670,7 +662,7 @@ namespace nMail
 
                 if(item.Contains("Content-Type: text/plain;"))
                 {
-                    // Start Zeile holen
+                    // Startzeile holen
                     for(int i = z; i < mime.Count ; i++)
                     {
                         if(String.IsNullOrEmpty(mime[i]))
@@ -680,10 +672,10 @@ namespace nMail
                         }
                     }
 
-                    // End Zeile holen
+                    // Endzeile holen
                     for(int i = Start ; i < mime.Count ; i++)
                     {
-                        if(mime[i].Contains(boundarray))
+                        if(mime[i].Contains(boundary))
                         {
                             ende = i;
                             break;

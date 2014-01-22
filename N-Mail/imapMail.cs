@@ -5,16 +5,17 @@ using System.Text;
 
 namespace nMail
 {
-    public class imapMail
+    public class ImapMail
     {
-        String imapmail;
-        imapMime parser;
+        String imapMail;
+        ImapMime parser;
 
-        public imapMail(String folder, UserInformation ui, int ID)
+        public ImapMail(String folder, UserInformation ui, int ID)
         {
-            imapmail = new imapClient(ui).getmail(folder, ID);
-            parser = new imapMime(imapmail);
-            loadBoundarray();
+            imapMail = new ImapClient(ui).getMail(folder, ID);
+            parser = new ImapMime(imapMail);
+
+            loadBoundary();
             loadHtmlBody();
             loadPlainBody();
             loadNoneMultipartBody();
@@ -22,22 +23,22 @@ namespace nMail
             loadSubject();
             loadDeliveryDate();
             loadAttachments();
-            loadAttachmantCount();
+            loadAttachmentCount();
             loadHasMultipart();
             loadHasMixedMultipart();
             loadHasHtmlBody();
             loadHasPlainBody();
         }
 
-        public String boundary { get; set; }
+        public String Boundary { get; set; }
         public String HtmlBody { get; set; }
         public String PlainBody { get; set; }
         public String NoneMultipartBody { get; set; }
         public String Sender { get; set; }
         public String Subject { get; set; }
         public String DeliveryDate { get; set; }
-        public List<Attachment> Attachmants { get; set; }
-        public int AttachmantCount { get; set; }
+        public List<Attachment> Attachments { get; set; }
+        public int AttachmentCount { get; set; }
         public Boolean HasMultipart { get; set; }
         public Boolean HasMixedMultipart { get; set; }
         public Boolean HasHtmlBody { get; set; }
@@ -45,97 +46,97 @@ namespace nMail
 
 
         /// <summary>
-        /// Ladet das boundary in die Eigenschaft boundary
+        /// Ladet das Boundary in die Eigenschaft boundary
         /// </summary>
-        private void loadBoundarray()
+        private void loadBoundary()
         {
-            if(parser.hasBoundaray()==true)
+            if(parser.hasBoundary()==true)
             {
-                this.boundary = parser.boundarray();
+                this.Boundary = parser.getBoundary();
             }
         }
 
         /// <summary>
-        /// lädt den html body in die Eigenschaft HtmlBody
+        /// Lädt den HTML-Body in die Eigenschaft HtmlBody
         /// </summary>
         private void loadHtmlBody()
         {
-            if (parser.hasHtmlBody() == true && this.boundary != null)
+            if (parser.hasHtmlBody() == true && this.Boundary != null)
             {
-                this.HtmlBody = parser.bodyAsHtml(this.boundary);
+                this.HtmlBody = parser.getBodyAsHtml(this.Boundary);
             }
         }
 
         /// <summary>
-        /// lädt den Plain Body in die Eigenschaft PlainBody
+        /// Lädt den Plain-Body in die Eigenschaft PlainBody
         /// </summary>
         private void loadPlainBody()
         {
-            if (parser.hasPlainBody() == true && this.boundary != null)
+            if (parser.hasPlainBody() == true && this.Boundary != null)
             {
-                this.PlainBody = parser.bodyAsPlain(this.boundary);
+                this.PlainBody = parser.getBodyAsPlain(this.Boundary);
             }
         }
 
         /// <summary>
-        /// lädt den Body der mail in die Eigenschaft NineMultipart
+        /// Lädt den Body der Mail in die Eigenschaft NoneMultipartBody
         /// </summary>
         private void loadNoneMultipartBody()
         {
-            if (parser.hasMultipart() == false && this.boundary == null)
+            if (parser.hasMultipart() == false && this.Boundary == null)
             {
-                this.NoneMultipartBody = parser.noneMultiPart();
+                this.NoneMultipartBody = parser.getTextAsNoneMultiPart();
             }
         }
 
         /// <summary>
-        /// lädt den Absender der Mail in die Eigenschaft sender
+        /// Lädt den Absender der Mail in die Eigenschaft Sender
         /// </summary>
         private void loadSender()
         {
-            this.Sender = parser.sender();
+            this.Sender = parser.getSender();
         }
 
         /// <summary>
-        /// lädt den Betreff der Mail in die Eigenschaft Subject
+        /// Lädt den Betreff der Mail in die Eigenschaft Subject
         /// </summary>
         private void loadSubject()
         {
-            this.Subject = parser.Subject();
+            this.Subject = parser.getSubject();
         }
 
         /// <summary>
-        /// lädt das Empfangsdatum in die Eigenschaft DeliveryDate
+        /// Lädt das Empfangsdatum in die Eigenschaft DeliveryDate
         /// </summary>
         private void loadDeliveryDate()
         {
-            this.DeliveryDate = parser.DeliveryDate();
+            this.DeliveryDate = parser.getDeliveryDate();
         }
 
         /// <summary>
-        /// lädt die Datei Anhange in die EigenschaftAttachments
+        /// Lädt die Dateianhänge in die Eigenschaft Attachments
         /// </summary>
         private void loadAttachments()
         {
-            if (parser.hasAttachmants() == true && this.boundary != null)
+            if (parser.hasAttachments() == true && this.Boundary != null)
             {
-                this.Attachmants = parser.Attachments(this.boundary);
+                this.Attachments = parser.getAttachments(this.Boundary);
             }
         }
 
         /// <summary>
-        /// Lädt die Anzahl der Enthaltenen Attachmants in die Eigenschaft AttachmantCount
+        /// Lädt die Anzahl der enthaltenen Attachments in die Eigenschaft AttachmentCount
         /// </summary>
-        private void loadAttachmantCount()
+        private void loadAttachmentCount()
         {
-            if (parser.hasAttachmants())
+            if (parser.hasAttachments())
             {
-                this.AttachmantCount = parser.AttachmentCount();
+                this.AttachmentCount = parser.getAttachmentCount();
             }
         }
 
         /// <summary>
-        /// lädt den wert in die Eigenschaft hasMultipart, der Angibt ob die Mail einen Multipart hat
+        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Mail vom Typ Multipart ist
         /// </summary>
         private void loadHasMultipart()
         {
@@ -143,7 +144,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// lädt den wert in die Eigenschaft HasMixedMultipart, der Angibt ob die Mail einen HasMixedMultipart hat
+        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Mail vom Typ MixedMultipart ist
         /// </summary>
         private void loadHasMixedMultipart()
         {
@@ -151,7 +152,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// lädt den wert in die Eigenschaft HasHtmlBody, der Angibt ob die Mail einen HasHtmlBody besitzt
+        /// Lädt den Wert in die Eigenschaft HasHtmlBody, der angibt, ob die Mail einen HTML-Body besitzt
         /// </summary>
         private void loadHasHtmlBody()
         {
@@ -159,13 +160,12 @@ namespace nMail
         }
 
         /// <summary>
-        /// lädt den wert in die Eigenschaft HasPlainBody, der Angibt ob die Mail einen HasPlainBody besitzt
+        /// Lädt den Wert in die Eigenschaft HasPlainBody, der angibt, ob die Mail einen Plain-Body besitzt
         /// </summary>
         private void loadHasPlainBody()
         {
             this.HasPlainBody = parser.hasPlainBody();
         }
-
 
     }
 }

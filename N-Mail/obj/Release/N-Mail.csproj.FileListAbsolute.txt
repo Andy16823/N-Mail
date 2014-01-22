@@ -1,4 +1,0 @@
-C:\Users\Alex\documents\visual studio 2010\Projects\N-Mail\N-Mail\bin\Release\N-Mail.dll
-C:\Users\Alex\documents\visual studio 2010\Projects\N-Mail\N-Mail\bin\Release\N-Mail.pdb
-C:\Users\Alex\documents\visual studio 2010\Projects\N-Mail\N-Mail\obj\Release\N-Mail.dll
-C:\Users\Alex\documents\visual studio 2010\Projects\N-Mail\N-Mail\obj\Release\N-Mail.pdb

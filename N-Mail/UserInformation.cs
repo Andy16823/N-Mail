@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace nMail
 {
     /// <summary>
-    /// Diese Klasse fungiert als konten klasse
+    /// Diese Klasse fungiert als Kontenklasse
     /// </summary>
     public class UserInformation : System.Net.NetworkCredential
     {
@@ -16,24 +15,20 @@ namespace nMail
         public Boolean SSL { get; set; }
 
         /// <summary>
-        /// Initialisiert eine Neue Klasse UserInformationen
+        /// Initialisiert die Benutzerinformationen
         /// </summary>
         /// <param name="username">Benutzername</param>
-        /// <param name="Server">Server Adresse</param>
+        /// <param name="Server">Serveradresse</param>
         /// <param name="Password">Passwort</param>
-        /// <param name="Port">Server Port</param>
-        /// <param name="SSL">SSL Verbindung Nutzen</param>
-        public UserInformation(String username, String Server, String Password, int Port,Boolean SSL)
+        /// <param name="Port">Serverport</param>
+        /// <param name="SSL">SSL-Verbindung nutzen?</param>
+        public UserInformation(String username, String server, String password, int port, Boolean ssl)
         {
-            this.Domain = Server;
-            this.Password = Password;
+            this.Domain = server;
+            this.Password = password;
             this.UserName = username;
-            this.Port = Port;
-            this.SSL = SSL;
+            this.Port = port;
+            this.SSL = ssl;
         }
-
-        
-        
-        
     }
 }

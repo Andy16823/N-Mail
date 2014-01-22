@@ -4,11 +4,10 @@ using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace nMail
 {
-    public class popClient
+    public class PopClient
     {
         private System.Net.Sockets.TcpClient client;
         private System.IO.StreamReader sr;
@@ -17,15 +16,17 @@ namespace nMail
 
         private void initial(UserInformation ui, System.IO.StreamReader sr, System.IO.StreamWriter sw)
         {
-            // Wilkommens Nachricht
+            // Wilkommensnachricht
             sr.ReadLine();
+
             // Username
             sw.WriteLine("USER" + ui.Domain);
-            // Leerlesen
+
             sr.ReadLine();
+
             // Passwort
             sw.WriteLine("PASS " + ui.Password);
-            // leer leden
+            
             sr.ReadLine();
         }
 
@@ -42,58 +43,55 @@ namespace nMail
             client = new TcpClient(userinformation.Domain, userinformation.Port);
             
             // Connecten
-            connect(userinformation, client);
+            Connect(userinformation, client);
 
             // Autoflush
             sw.AutoFlush = true;
 
-            // Wilkommens Nachricht
+            // Wilkommensnachricht
             WlkMsg = sr.ReadLine();
 
-            // User Name Übergeben
+            // Username übergeben
             sw.WriteLine("USER " + userinformation.UserName);
 
-            // leer lesen
             sr.ReadLine();
 
-            // Passwort Senden
+            // Passwort senden
             sw.WriteLine("PASS " + userinformation.Password);
             
-            // leer lesen
             sr.ReadLine();
 
             // Status
             sw.WriteLine("STAT");
 
-            // leer lesen
             msg = sr.ReadLine();
 
-            // String Spliten
+            // String splitten
             String[] match = msg.Split(' ');
 
-            // String umwandeln in int
+            // String umwandeln in Integer
             int count = int.Parse(match[1]);
-
-            return count;
 
             sw.WriteLine("QUIT");
 
-            // Stream Schließen
+            // Stream schließen
             sw.Close();
             sr.Close();
+
+            return count;
             
         }
         
         /// <summary>
         /// Stellt eine Verbindung zum Server her.
         /// </summary>
-        /// <param name="ui">Klasse UserInformation</param>
+        /// <param name="ui">Benutzerinformation</param>
         /// <param name="reader">Reader</param>
         /// <param name="writer">Writer</param>
         /// <param name="client">TcpClient</param>
-        public void connect(UserInformation ui, System.Net.Sockets.TcpClient client)
+        public void Connect(UserInformation ui, System.Net.Sockets.TcpClient client)
         {          
-            // Prüft ob ein SSL Stream Verwendet werden soll.
+            // Prüft, ob ein SSL-Stream verwendet werden soll.
             if(ui.SSL==true)
             {
                 SslStream str = new SslStream(client.GetStream());
@@ -110,7 +108,7 @@ namespace nMail
         }
         
         /// <summary>
-        /// Gibt eine Mail vom Pop3 Server
+        /// Gibt eine Mail vom POP3-Server zurück
         /// </summary>
         /// <param name="ui"></param>
         /// <param name="n"></param>
@@ -120,39 +118,36 @@ namespace nMail
             String tmps;
             List<String> Nachricht = new List<string>();
             
-            // Ersletllen der Benötigten Klassen
+            // Erstellen der benötigten Klassen
             
             client = new TcpClient(ui.Domain, ui.Port);
 
             // Verbinden
-            connect(ui,client);
+            Connect(ui,client);
 
             // Autoflush einstellen
-
             sw.AutoFlush = true;
 
-            // Wilkommens Nachricht
+            // Wilkommensnachricht
             sr.ReadLine();
 
-            // User Name Übergeben
+            // Username Übergeben
             sw.WriteLine("USER " + ui.UserName);
 
-            // leer lesen
             sr.ReadLine();
 
-            // Passwort Senden
+            // Passwort senden
             sw.WriteLine("PASS " + ui.Password);
 
-            // leer lesen
             sr.ReadLine();
 
             // Mail holen
             sw.WriteLine("RETR " + n);
 
-            // Erste line
+            // Erste Zeile auslesen
             tmps = sr.ReadLine();
 
-            // Solange temps nicht "." ist
+            // Solange tmps nicht "." ist
             while (tmps != ".")
             {
                 // tmps hinzufügen
@@ -161,16 +156,14 @@ namespace nMail
                 tmps = sr.ReadLine();
             }
 
-
-
-            return Nachricht;
-
             // Schließen
 
             sw.WriteLine("QUIT");
 
             sw.Close();
             sr.Close();
+
+            return Nachricht;
 
         }
     }

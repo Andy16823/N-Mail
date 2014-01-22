@@ -5,27 +5,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 /*
- * Dieser Mime Parser ist nur für mails die über den Imap Clienten Abgerufen wurde, 
- * für pop3 Mails benutzen Sie bitte die Klasse mime
+ * Dieser Mime-Parser ist nur für Mails, die über den Imap-Client abgerufen wurden, 
+ * Für POP3-Mails benutzen Sie bitte die Klasse Mime
  */
 
 namespace nMail
 {
-    public class imapMime
+    public class ImapMime
     {
 
         public List<String> mime;
 
-        /*
-         * Text Ausgaben 
-         */
-
-
         /// <summary>
-        /// Initailisiert eine Neue klasse des Imap Mime
+        /// Initialisiert die Klasse ImapMime
         /// </summary>
         /// <param name="mimeMail"></param>
-        public imapMime(String mimeMail)
+        public ImapMime(String mimeMail)
         {
             mime = new List<string>();
             String[] match = mimeMail.Split('\n');
@@ -36,10 +31,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt das boundary zurück das die mail aufteilt
+        /// Gibt das Boundary zurück, das die mail aufteilt
         /// </summary>
         /// <returns></returns>
-        public String boundarray()
+        public String getBoundary()
         {
             String ausgabe = "";
 
@@ -48,8 +43,8 @@ namespace nMail
                 if (item.Contains("boundary"))
                 {
                     String[] match = item.Split('=');
-                    String barrUnformattet = match[1];
-                    ausgabe = barrUnformattet.Replace("\"", "");
+                    String barrUnformatted = match[1];
+                    ausgabe = barrUnformatted.Replace("\"", "");
                 }
             }
 
@@ -57,11 +52,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt den body als html format zurück
+        /// Gibt den Body im HTML-Format zurück
         /// </summary>
-        /// <param name="brr">das Boundaray</param>
+        /// <param name="brr">das Boundary</param>
         /// <returns></returns>
-        public String bodyAsHtml(String brr)
+        public String getBodyAsHtml(String brr)
         {
             String ausgabe = "";
             int z = 0;
@@ -73,7 +68,7 @@ namespace nMail
             {
                 if(item.Contains("Content-Type: text/html;"))
                 {
-                    // Start Contente holen
+                    // Start-Content holen
                     for(int i = z ; i > 0 ; i--)
                     {
                         if(mime[i].Contains(brr))
@@ -110,7 +105,7 @@ namespace nMail
                 z++;
             }
 
-            // Content von start nach ende durchlaufen
+            // Content von Start bis Ende durchlaufen
             for(int i = Start ; i < Ende ; i++)
             {
                 ausgabe += mime[i] + "\n";
@@ -120,11 +115,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt den body als Plain Text format zurück
+        /// Gibt den Body als Plain-Text zurück
         /// </summary>
-        /// <param name="brr"></param>
+        /// <param name="brr">Das Boundary</param>
         /// <returns></returns>
-        public String bodyAsPlain(String brr)
+        public String getBodyAsPlain(String brr)
         {
             String ausgabe = "";
             int z = 0;
@@ -136,7 +131,7 @@ namespace nMail
             {
                 if (item.Contains("Content-Type: text/plain;"))
                 {
-                    // Start Content Suchen
+                    // Start-Content Suchen
                     for (int i = z; i > 0; i--)
                     {
                         if (mime[i].Contains(brr))
@@ -146,7 +141,7 @@ namespace nMail
                         }
                     }
 
-                    // Start des Html Bereiches
+                    // Start des HTML-Bereiches
                     for (int i = cStart; i < mime.Count; i++)
                     {
                         if (String.IsNullOrEmpty(mime[i]))
@@ -166,14 +161,14 @@ namespace nMail
                         }
                     }
 
-                    // beenden der Schleife
+                    // Beenden der Schleife
                     break;
                 }
 
                 z++;
             }
 
-            // Ausgeben des Plain Bereiches
+            // Ausgeben des Plain-Content
             for (int i = Start; i < Ende; i++)
             {
                 ausgabe += mime[i] + "\n";
@@ -184,10 +179,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt den body als none Multipart zurück
+        /// Gibt den Body als NoneMultipart zurück
         /// </summary>
         /// <returns></returns>
-        public String noneMultiPart()
+        public String getTextAsNoneMultiPart()
         {
             String ausgabe = "";
             int Start = 0;
@@ -218,10 +213,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt den sender der mail zurück
+        /// Gibt den Sender der Mail zurück
         /// </summary>
         /// <returns></returns>
-        public String sender()
+        public String getSender()
         {
             String ausgabe = "";
 
@@ -239,10 +234,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt den Betreff der E-mail zurück
+        /// Gibt den Betreff der Email zurück
         /// </summary>
         /// <returns></returns>
-        public String Subject()
+        public String getSubject()
         {
             String ausgabe = "";
 
@@ -259,10 +254,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt das empfangsdatum der email zurück
+        /// Gibt das Empfangsdatum der Email zurück
         /// </summary>
         /// <returns></returns>
-        public String DeliveryDate()
+        public String getDeliveryDate()
         {
             String ausgabe = "";
 
@@ -277,19 +272,13 @@ namespace nMail
             
             return ausgabe;
         }
-    
-        
-        /*
-         * Attachments Ausgeben
-         */
-
 
         /// <summary>
-        /// gibt die Datei Anhänge der Mail zurück
+        /// Gibt die Dateianhänge der Mail zurück
         /// </summary>
         /// <param name="brr"></param>
         /// <returns></returns>
-        public List<Attachment> Attachments(String brr)
+        public List<Attachment> getAttachments(String brr)
         {
             List<Attachment> attachts = new List<Attachment>();
 
@@ -306,7 +295,7 @@ namespace nMail
 
                     Attachment att = new Attachment();
 
-                    // Start des Contents Suchen
+                    // Start des Contents suchen
                     for ( int i = z ; i > 0 ; i--)
                     {
                         if(mime[i].Contains(brr))
@@ -316,7 +305,7 @@ namespace nMail
                         }
                     }
 
-                    // Start des Byte Strings suchen
+                    // Start des Byte-Strings suchen
                     for(int i = cStart ; i < mime.Count ; i++)
                     {
                         if(String.IsNullOrEmpty(mime[i]))
@@ -326,7 +315,7 @@ namespace nMail
                         }
                     }
 
-                    // Ende des Contents Suchen
+                    // Ende des Contents suchen
                     for(int i = Start ; i < mime.Count ; i++)
                     {
                         if(mime[i].Contains(brr))
@@ -336,12 +325,12 @@ namespace nMail
                         }
                     }
 
-                    // Ausgbabe des Content Types
+                    // Ausgabe des Contenttyps
                     for(int i = cStart; i < Start; i++)
                     {
                         if(mime[i].Contains("Content-Type:"))
                         {
-                            att.ContentTyp = mime[i].Replace("Content-Type:", "");
+                            att.ContentType = mime[i].Replace("Content-Type:", "");
                             break;
                         }
                     }
@@ -363,20 +352,20 @@ namespace nMail
                         if(mime[i].Contains("Content-Transfer-Encoding"))
                         {
                             Match match = Regex.Match(mime[i],".*\\:(?<inner>.*)");
-                            att.Encodebase = match.Groups["inner"].Value;
+                            att.EncodeBase = match.Groups["inner"].Value;
                             break;
                         }
                     }
 
-                    // Ausgabe und umandeln des Strings
+                    // Ausgabe und Umwandeln des Strings
                     String byteStr = "";
                     for(int i = Start ; i < Ende ; i++)
                     {
                         byteStr += mime[i];
                     }
-                    att.bytes = Convert.FromBase64String(byteStr);
+                    att.Bytes = Convert.FromBase64String(byteStr);
 
-                    // Attachmant hinzufügen
+                    // Attachment hinzufügen
                     attachts.Add(att);
 
                 }
@@ -388,10 +377,10 @@ namespace nMail
         }
     
         /// <summary>
-        /// gibt die Anzahl der Datei anhänge zurück
+        /// Gibt die Anzahl der Dateianhänge zurück
         /// </summary>
         /// <returns></returns>
-        public int AttachmentCount()
+        public int getAttachmentCount()
         {
             int ausgabe = 0;
 
@@ -405,14 +394,9 @@ namespace nMail
 
             return ausgabe;
         }
-		 
-
-        /*
-         * Boolenische Werte
-         */
 
         /// <summary>
-        /// gibt einen boolenischen wert zurück ob die mime mail das format hasHtmlBody beinhaltet
+        /// prüft, ob die Mime-Mail einen HTML-Body beinhaltet
         /// </summary>
         /// <returns></returns>
         public Boolean hasHtmlBody()
@@ -432,7 +416,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt einen booleinischen wert zurück pb die mime mail das format Plain-Text beinhaltet
+        /// Prüft, ob die Mime-Mail einen Plain-Body beinhaltet
         /// </summary>
         /// <returns></returns>
         public Boolean hasPlainBody()
@@ -453,7 +437,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt einen boolenischen wert zurück ob die mime mail einen Multipart hat
+        /// Prüft, ob die Mime-Mail einen Multipart hat
         /// </summary>
         /// <returns></returns>
         public Boolean hasMultipart()
@@ -473,7 +457,7 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt einen boolenischen wert zurück ob die mime mail einen Mixed Multipart beinhaltet
+        /// Prüft, ob die Mime-Mail einen MixedMultipart beinhaltet
         /// </summary>
         /// <returns></returns>
         public Boolean hasMixedMultipart()
@@ -493,10 +477,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft ob ein Bound Array Vorhanden ist.
+        /// Prüft ob ein Boundary Vorhanden ist.
         /// </summary>
         /// <returns></returns>
-        public Boolean hasBoundaray()
+        public Boolean hasBoundary()
         {
             Boolean ausgabe = false;
 
@@ -514,10 +498,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft ob es Datei Anhänge in der Mail gibt
+        /// Prüft, ob es Dateianhänge in der Mail gibt
         /// </summary>
         /// <returns></returns>
-        public Boolean hasAttachmants()
+        public Boolean hasAttachments()
         {
             Boolean ausgabe = false;
 

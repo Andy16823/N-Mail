@@ -6,21 +6,21 @@ using System.Text;
 
 
 /*
- * Die hier in den methoden und funktionen geschilderten Blocks werden wie folgt verarbeitet
+ * Die hier in den Methoden und Funktionen geschilderten Blöcke werden wie folgt verarbeitet
  * 
- * 1.) Dem server einen befehl senden
- * 2.) Den Comand freigeben
- * 3.) Die nachricht des Servers Auslesen
- * 4.) den Session Icncrement wert (si) um eins erhöhen
+ * 1.) Dem Server einen Befehl senden
+ * 2.) Den Befehl freigeben
+ * 3.) Die Nachricht des Servers auslesen
+ * 4.) den Session-Increment-Wert (SI) um eins erhöhen
  *  
  */
 
 namespace nMail
 {
     /// <summary>
-    /// Stellt einen Clienten für den Entfang von Imap Mails bereit.
+    /// Stellt einen Client für den Empfang von IMAP-Mails bereit
     /// </summary>
-    public class imapClient
+    public class ImapClient
     {
         public System.Net.Sockets.TcpClient client;
         public System.IO.StreamReader reader;
@@ -30,26 +30,27 @@ namespace nMail
 
 
         /// <summary>
-        /// erstellt eine neue imap server klasse
+        /// Erstellt eine neue IMAP-Client-Klasse
         /// </summary>
         /// <param name="ui"></param>
-        public imapClient(UserInformation ui)
+        public ImapClient(UserInformation ui)
         {
             this.ui = ui;
         }
 
         /// <summary>
-        /// verbindet zu dem Angebenen server
+        /// Verbindet zum angebenen Server
         /// </summary>
-        public void connect()
+        public void Connect()
         {
             client = new System.Net.Sockets.TcpClient(ui.Domain, ui.Port);
 
             if(ui.SSL==true)
             {
-                // Ssl Stream Erstellen
+
+                // SSL-Stream erstellen
                 SslStream ssl = new SslStream(client.GetStream());
-                // Server Authentivizieren
+                // Server authentifizieren
                 ssl.AuthenticateAsClient(ui.Domain);
                 reader = new System.IO.StreamReader(ssl);
                 writer = new System.IO.StreamWriter(ssl);
@@ -57,41 +58,44 @@ namespace nMail
             }
             else if(ui.SSL==false)
             {
+
                 System.IO.Stream str = client.GetStream();
                 reader = new System.IO.StreamReader(str);
                 writer = new System.IO.StreamWriter(str);
+
             }
           
-            // si Wert auf 0 Setzen
+            // si-Wert auf 0 setzen
             si = 0;
         }
         
         /// <summary>
-        /// gibt zu dem Angebenen Postfach die Informationen zurück.
+        /// Gibt zum angebenen Postfach die Informationen zurück.
         /// </summary>
-        /// <param name="postfach">das postfach aus dem die informationen geladen werden sollen.</param>
-        public String malingInfos(String postfach)
+        /// <param name="postfach">Das Postfach, aus dem die Informationen geladen werden sollen.</param>
+        public String MailingInfos(String postfach)
         {
-            // Conecten
-            connect();
+            // Verbinden
+            Connect();
 
-            // Deklarieren der Lokalen Varaibln
+            // Deklarieren der lokalen Variablen
             String tmp = "";
             String ausgabe = "";
 
-            // entfangen der Wilkommens nachricht
-            System.Windows.Forms.MessageBox.Show(reader.ReadLine());
+            // Empfangen der Wilkommensnachricht
+            // System.Windows.Forms.MessageBox.Show(reader.ReadLine());
 
-            // Senden des Benutzer Passwortes und der mail Adresse
+            // Senden des Benutzerpasswortes und der Email-Adresse
             writer.WriteLine("n" + si + " LOGIN " + ui.UserName + " " + ui.Password);
             writer.Flush();
             
 
             // Abfragen der Nachricht
-            System.Windows.Forms.MessageBox.Show(reader.ReadLine());
+            //System.Windows.Forms.MessageBox.Show(reader.ReadLine());
+
             si++;
 
-            // Senden das wir den Status von unserem Postfach möchten
+            // Senden, das wir den Status von unserem Postfach möchten
             writer.WriteLine("n" + si + " select " + postfach);
             writer.Flush();
             
@@ -100,7 +104,7 @@ namespace nMail
             tmp = reader.ReadLine();
             while (true)
             {
-                System.Windows.Forms.MessageBox.Show(tmp);
+                // System.Windows.Forms.MessageBox.Show(tmp);
                 ausgabe += tmp + "\n";
                 tmp = reader.ReadLine();
                 if (tmp.StartsWith("n" + si)) break;
@@ -114,7 +118,7 @@ namespace nMail
             si = 0;
 
 
-            // Disconnect
+            // Verbindung trennen
             disconnect();
 
             return ausgabe;
@@ -123,22 +127,22 @@ namespace nMail
         }
 
         /// <summary>
-        /// gibt die Mail in dem gewählten Postfach als mime zurück.
+        /// Gibt die Mail in dem gewählten Postfach als Mime zurück.
         /// </summary>
-        /// <param name="postfach">das Postfach das der user möchtet</param>
-        /// <param name="id">die ID der Mime mail</param>
+        /// <param name="postfach">Das Postfach, das der User möchte</param>
+        /// <param name="id">Die ID der Mime-Mail</param>
         /// <returns></returns>
-        public String getmail(String postfach, int id)
+        public String getMail(String postfach, int id)
         {
             String tmp;
             String returnStr = "";
 
             // Conecten
-            connect();
+            Connect();
 
             
             /*
-             * Block 1 Einlogen 
+             * Block 1: Einloggen 
              */
 
             reader.ReadLine();
@@ -150,7 +154,7 @@ namespace nMail
 
 
             /*
-             *  Block 2 Postfach wählen
+             *  Block 2: Postfach wählen
              */
 
 
@@ -167,7 +171,7 @@ namespace nMail
 
 
             /*
-             *  Block 3 Mail Ausgeben
+             *  Block 3: Mail ausgeben
              */
 
 
@@ -185,7 +189,7 @@ namespace nMail
 
 
             /*
-             * Block 4 Mail Body Ausgeben
+             * Block 4: Mail-Body ausgeben
              */
 
 
@@ -202,14 +206,11 @@ namespace nMail
 
 
             /*
-             * Block 5 Verbindung und Strams Schließen 
+             * Block 5: Verbindung und Strams Schließen 
              */
 
 
             disconnect();
-            reader.Close();
-            writer.Close();
-            
 
             /*
              * Ausgabe der Mime Mail 
@@ -221,9 +222,9 @@ namespace nMail
         }
 
         /// <summary>
-        /// Schließen der verbindung
+        /// Schließen der Verbindung
         /// </summary>
-        public void disconnect()
+        private void disconnect()
         {
             reader.Close();
             writer.Close();

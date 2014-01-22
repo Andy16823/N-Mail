@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace nMail
 {
@@ -12,14 +11,14 @@ namespace nMail
 
         public Mail(UserInformation ui, int id)
         {
-            list = new popClient().getMail(ui, id);
-            getBoundarray();
-            sethtmlBody();
+            list = new PopClient().getMail(ui, id);
+            getBoundary();
+            setHtmlBody();
             setPlainBody();
             setNoneMultipart();
             setSubject();
             setFrom();
-            setReciver();
+            setReceiver();
             setHasMultipart();
             setHasMixedMultipart();
             getAttachmentCount();
@@ -39,55 +38,55 @@ namespace nMail
         public String BodyAsNoneMultipart { get; set; }
         public String Subject { get; set; }
         public String From { get; set; }
-        public String Reciver { get; set; }
-        public String boundarray { get; set; }
+        public String Receiver { get; set; }
+        public String Boundary { get; set; }
 
 
         public List<Attachment> Attachments { get; set; }
         public int AttachmentCount { get; set; }
 
         /// <summary>
-        /// lädt das boundarray in die eigenschaft boundarray
+        /// Lädt das Boundary in die Eigenschaft Boundary
         /// </summary>
-        private void getBoundarray()
+        private void getBoundary()
         {
-            mime parser = new mime();
-            this.boundarray = parser.getBoundarray(list);
+            Mime parser = new Mime();
+            this.Boundary = parser.getBoundary(list);
             
         }
 
         /// <summary>
-        /// lädt den html Content in die Eigenschaft BodyAsHtml
+        /// Setzt den HTML-Content
         /// </summary>
-        private void sethtmlBody()
+        private void setHtmlBody()
         {
-            mime parser = new mime();
-            if (parser.hasHtmlText(list) == true && this.boundarray != null)
+            Mime parser = new Mime();
+            if (parser.hasHtmlText(list) == true && this.Boundary != null)
             {
                 this.hasHTMLBody = true;
-                this.BodyAsHtml = parser.HtmlBody(list, parser.getBoundarray(list));
+                this.BodyAsHtml = parser.HtmlBody(list, parser.getBoundary(list));
             }
         }
 
         /// <summary>
-        /// lädt den plain Content in die Eigenschaft BodyAsHtml
+        /// Setzt den Plain-Content
         /// </summary>
         private void setPlainBody()
         {
-            mime parser = new mime();
-            if (parser.hasPlainText(list) == true && this.boundarray != null)
+            Mime parser = new Mime();
+            if (parser.hasPlainText(list) == true && this.Boundary != null)
             {
                 this.hasPlainTextBody = true;
-                this.BodyAsPlainText = parser.PlainBody(list, this.boundarray);
+                this.BodyAsPlainText = parser.PlainBody(list, this.Boundary);
             }
         }
 
         /// <summary>
-        /// lädt den Body als none Multipart
+        /// Setzt den Body als NoneMultipart
         /// </summary>
         private void setNoneMultipart()
         {
-            mime parser = new mime();
+            Mime parser = new Mime();
 
             if (parser.isMultipart(list) == false)
             {
@@ -96,68 +95,66 @@ namespace nMail
         }
 
         /// <summary>
-        /// lädt den Betreff der mail
+        /// Setzt den Betreff der Mail
         /// </summary>
         private void setSubject()
         {
-            mime parser = new mime();
+            Mime parser = new Mime();
             this.Subject = parser.getSubject(list);
         }
 
         /// <summary>
-        /// lädt den Absender in die From Eigenschaft
+        /// Setzt den Absender
         /// </summary>
         private void setFrom()
         {
-            mime parser = new mime();
+            Mime parser = new Mime();
             this.From = parser.getSender(list);
         }
 
         /// <summary>
-        /// lädt den Absender in die Reciver Eigenschaft
+        /// Setzt den Empfänger
         /// </summary>
-        private void setReciver()
+        private void setReceiver()
         {
-            this.Reciver = new mime().getTo(list);
+            this.Receiver = new Mime().getTo(list);
         }
 
         /// <summary>
-        /// lädt den Boolenischen wert in die Eigenschaft hasMultipart
+        /// Setzt die Eigenschaft hasMultipart
         /// </summary>
         private void setHasMultipart()
         {
-            this.hasMultipart = new mime().isMultipart(list);
+            this.hasMultipart = new Mime().isMultipart(list);
         }
 
         /// <summary>
-        /// lädt den Boolenischen wert in die Eigenschaft hasMixedMultipart
+        /// Setzt die Eigenschaft hasMixedMultipart
         /// </summary>
         private void setHasMixedMultipart()
         {
-            this.hasMixedMultipart = new mime().isMixedMultipart(list);
+            this.hasMixedMultipart = new Mime().isMixedMultipart(list);
         }
 
         /// <summary>
-        /// lädt den int Wert der Anzahl der Datei Anhänge
+        /// Lädt die Anzahl der Anhänge
         /// </summary>
         private void getAttachmentCount()
         {
-            mime parser = new mime();
-            this.AttachmentCount = parser.getAttachmantCount(list);
-
-
+            Mime parser = new Mime();
+            this.AttachmentCount = parser.getAttachmentCount(list);
         }
 
         /// <summary>
-        /// lädt die liste der eigenschaften wenn der Count != 0 ist.
+        /// Lädt die Liste der Anhänge
         /// </summary>
         private void getAttachments()
         {
-            mime parser = new mime();
+            Mime parser = new Mime();
 
-            if (parser.getAttachmantCount(list) != 0)
+            if (parser.getAttachmentCount(list) != 0)
             {
-                this.Attachments = parser.getAttachmants(list,boundarray);
+                this.Attachments = parser.getAttachments(list,this.Boundary);
             }
             
         }
