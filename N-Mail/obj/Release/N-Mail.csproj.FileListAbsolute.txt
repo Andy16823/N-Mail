@@ -1,0 +1,4 @@
+D:\GitHub\nMail\N-Mail\bin\Release\N-Mail.dll
+D:\GitHub\nMail\N-Mail\bin\Release\N-Mail.pdb
+D:\GitHub\nMail\N-Mail\obj\Release\N-Mail.dll
+D:\GitHub\nMail\N-Mail\obj\Release\N-Mail.pdb
