@@ -50,7 +50,7 @@ namespace nMail
         /// </summary>
         private void loadBoundary()
         {
-            if(parser.hasBoundary()==true)
+            if(parser.hasBoundary())
             {
                 this.Boundary = parser.getBoundary();
             }
@@ -61,7 +61,7 @@ namespace nMail
         /// </summary>
         private void loadHtmlBody()
         {
-            if (parser.hasHtmlBody() == true && this.Boundary != null)
+            if (parser.hasHtmlBody() && !String.IsNullOrEmpty(Boundary))
             {
                 this.HtmlBody = parser.getBodyAsHtml(this.Boundary);
             }
@@ -72,7 +72,7 @@ namespace nMail
         /// </summary>
         private void loadPlainBody()
         {
-            if (parser.hasPlainBody() == true && this.Boundary != null)
+            if (parser.hasPlainBody() && !String.IsNullOrEmpty(Boundary))
             {
                 this.PlainBody = parser.getBodyAsPlain(this.Boundary);
             }
@@ -83,7 +83,7 @@ namespace nMail
         /// </summary>
         private void loadNoneMultipartBody()
         {
-            if (parser.hasMultipart() == false && this.Boundary == null)
+            if (!parser.hasMultipart() && String.IsNullOrEmpty(Boundary))
             {
                 this.NoneMultipartBody = parser.getTextAsNoneMultiPart();
             }
@@ -118,7 +118,7 @@ namespace nMail
         /// </summary>
         private void loadAttachments()
         {
-            if (parser.hasAttachments() == true && this.Boundary != null)
+            if (parser.hasAttachments() && !String.IsNullOrEmpty(Boundary))
             {
                 this.Attachments = parser.getAttachments(this.Boundary);
             }
