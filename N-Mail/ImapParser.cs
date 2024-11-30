@@ -5,22 +5,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 /*
- * Dieser Mime-Parser ist nur für Mails, die über den Imap-Client abgerufen wurden, 
- * Für POP3-Mails benutzen Sie bitte die Klasse Mime
+ * Dieser POP3Parser-Parser ist nur für Mails, die über den Imap-Client abgerufen wurden, 
+ * Für POP3-Mails benutzen Sie bitte die Klasse POP3Parser
  */
 
 namespace nMail
 {
-    public class ImapMime
+    public class ImapParser
     {
 
         public List<String> mime;
 
         /// <summary>
-        /// Initialisiert die Klasse ImapMime
+        /// Initialisiert die Klasse ImapParser
         /// </summary>
         /// <param name="mimeMail"></param>
-        public ImapMime(String mimeMail)
+        public ImapParser(String mimeMail)
         {
             mime = new List<string>();
             String[] match = mimeMail.Split('\n');
@@ -34,7 +34,7 @@ namespace nMail
         /// Gibt das Boundary zurück, das die mail aufteilt
         /// </summary>
         /// <returns></returns>
-        public String getBoundary()
+        public String GetBoundary()
         {
             String ausgabe = "";
 
@@ -56,7 +56,7 @@ namespace nMail
         /// </summary>
         /// <param name="brr">das Boundary</param>
         /// <returns></returns>
-        public String getBodyAsHtml(String brr)
+        public String GetBodyAsHtml(String brr)
         {
             String ausgabe = "";
             int z = 0;
@@ -119,7 +119,7 @@ namespace nMail
         /// </summary>
         /// <param name="brr">Das Boundary</param>
         /// <returns></returns>
-        public String getBodyAsPlain(String brr)
+        public String GetBodyAsPlain(String brr)
         {
             String ausgabe = "";
             int z = 0;
@@ -182,7 +182,7 @@ namespace nMail
         /// Gibt den Body als NoneMultipart zurück
         /// </summary>
         /// <returns></returns>
-        public String getTextAsNoneMultiPart()
+        public String GetTextAsNoneMultiPart()
         {
             String ausgabe = "";
             int Start = 0;
@@ -200,7 +200,7 @@ namespace nMail
                 z++;
             }
 
-            // Ausgeben der Mail
+            // Ausgeben der Pop3Mail
 
             for (int i = Start; i < mime.Count; i++)
             {
@@ -213,10 +213,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt den Sender der Mail zurück
+        /// Gibt den Sender der Pop3Mail zurück
         /// </summary>
         /// <returns></returns>
-        public String getSender()
+        public String GetReturnPath()
         {
             String ausgabe = "";
 
@@ -237,7 +237,7 @@ namespace nMail
         /// Gibt den Betreff der Email zurück
         /// </summary>
         /// <returns></returns>
-        public String getSubject()
+        public String GetSubject()
         {
             String ausgabe = "";
 
@@ -257,7 +257,7 @@ namespace nMail
         /// Gibt das Empfangsdatum der Email zurück
         /// </summary>
         /// <returns></returns>
-        public String getDeliveryDate()
+        public String GetDeliveryDate()
         {
             String ausgabe = "";
 
@@ -274,11 +274,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt die Dateianhänge der Mail zurück
+        /// Gibt die Dateianhänge der Pop3Mail zurück
         /// </summary>
         /// <param name="brr"></param>
         /// <returns></returns>
-        public List<Attachment> getAttachments(String brr)
+        public List<Attachment> GetAttachments(String brr)
         {
             List<Attachment> attachts = new List<Attachment>();
 
@@ -380,7 +380,7 @@ namespace nMail
         /// Gibt die Anzahl der Dateianhänge zurück
         /// </summary>
         /// <returns></returns>
-        public int getAttachmentCount()
+        public int GetAttachmentCount()
         {
             int ausgabe = 0;
 
@@ -396,10 +396,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// prüft, ob die Mime-Mail einen HTML-Body beinhaltet
+        /// prüft, ob die POP3Parser-Pop3Mail einen HTML-Body beinhaltet
         /// </summary>
         /// <returns></returns>
-        public Boolean hasHtmlBody()
+        public Boolean HasHtmlBody()
         {
             Boolean ausgabe = false;
 
@@ -416,10 +416,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft, ob die Mime-Mail einen Plain-Body beinhaltet
+        /// Prüft, ob die POP3Parser-Pop3Mail einen Plain-Body beinhaltet
         /// </summary>
         /// <returns></returns>
-        public Boolean hasPlainBody()
+        public Boolean HasPlainBody()
         {
             Boolean ausgabe = false;
 
@@ -437,10 +437,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft, ob die Mime-Mail einen Multipart hat
+        /// Prüft, ob die POP3Parser-Pop3Mail einen Multipart hat
         /// </summary>
         /// <returns></returns>
-        public Boolean hasMultipart()
+        public Boolean HasMultipart()
         {
             Boolean ausgabe = false;
 
@@ -457,10 +457,10 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft, ob die Mime-Mail einen MixedMultipart beinhaltet
+        /// Prüft, ob die POP3Parser-Pop3Mail einen MixedMultipart beinhaltet
         /// </summary>
         /// <returns></returns>
-        public Boolean hasMixedMultipart()
+        public Boolean HasMixedMultipart()
         {
             Boolean ausgabe = false;
 
@@ -480,7 +480,7 @@ namespace nMail
         /// Prüft ob ein Boundary Vorhanden ist.
         /// </summary>
         /// <returns></returns>
-        public Boolean hasBoundary()
+        public Boolean HasBoundary()
         {
             Boolean ausgabe = false;
 
@@ -497,11 +497,24 @@ namespace nMail
 
         }
 
+        public String GetSender()
+        {
+            foreach (String item in mime)
+            {
+                if(item.Contains("X-Envelope-From:"))
+                {
+                    var match = Regex.Match(item, @"<([^>]*)>");
+                    return match.Groups[1].Value;
+                }
+            }
+            return "";
+        }
+
         /// <summary>
-        /// Prüft, ob es Dateianhänge in der Mail gibt
+        /// Prüft, ob es Dateianhänge in der Pop3Mail gibt
         /// </summary>
         /// <returns></returns>
-        public Boolean hasAttachments()
+        public Boolean HasAttachments()
         {
             Boolean ausgabe = false;
 

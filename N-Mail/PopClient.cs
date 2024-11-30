@@ -108,7 +108,7 @@ namespace nMail
         }
         
         /// <summary>
-        /// Gibt eine Mail vom POP3-Server zurück
+        /// Gibt eine Pop3Mail vom POP3-Server zurück
         /// </summary>
         /// <param name="ui"></param>
         /// <param name="n"></param>
@@ -141,7 +141,7 @@ namespace nMail
 
             sr.ReadLine();
 
-            // Mail holen
+            // Pop3Mail holen
             sw.WriteLine("RETR " + n);
 
             // Erste Zeile auslesen

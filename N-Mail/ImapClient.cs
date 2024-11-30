@@ -14,7 +14,6 @@ using System.Text;
  * 4.) den Session-Increment-Wert (SI) um eins erhöhen
  *  
  */
-
 namespace nMail
 {
     /// <summary>
@@ -68,7 +67,121 @@ namespace nMail
             // si-Wert auf 0 setzen
             si = 0;
         }
-        
+
+        /// <summary>
+        /// Gibt eine Liste der verfügbaren Mailboxen (Ordner) zurück.
+        /// </summary>
+        /// <returns>Liste der Mailboxen.</returns>
+        public List<string> ListMailboxes()
+        {
+            // Lokale Variablen für die Verarbeitung
+            List<string> mailboxes = new List<string>();
+            String tmp;
+
+            // Verbindung aufbauen
+            Connect();
+
+            /*
+             * Block 1: Einloggen 
+             */
+            reader.ReadLine();
+            writer.WriteLine("n" + si + " LOGIN " + ui.UserName + " " + ui.Password);
+            writer.Flush();
+            reader.ReadLine();
+            si++;
+
+            /*
+             * Block 2: Mailboxen abfragen
+             */
+            writer.WriteLine("n" + si + " LIST \"\" \"*\"");
+            writer.Flush();
+            tmp = reader.ReadLine();
+
+            while (true)
+            {
+                if (tmp.StartsWith("*"))
+                {
+                    // Verzeichnisinformationen extrahieren
+                    string[] parts = tmp.Split(' ');
+                    string mailboxName = parts[parts.Length - 1];
+                    mailboxName = mailboxName.Trim('"'); // Entfernen von Anführungszeichen
+                    mailboxes.Add(mailboxName);
+                }
+                else if (tmp.StartsWith("n" + si))
+                {
+                    break; // Antwort vollständig gelesen
+                }
+
+                tmp = reader.ReadLine();
+            }
+
+            si++;
+
+            /*
+             * Block 3: Verbindung trennen
+             */
+            Disconnect();
+
+            return mailboxes;
+        }
+
+        /// <summary>
+        /// Gibt die Anzahl der Mails in einem bestimmten Postfach zurück.
+        /// </summary>
+        /// <param name="postfach">Das Postfach, dessen Nachrichten gezählt werden sollen.</param>
+        /// <returns>Anzahl der Nachrichten im Postfach.</returns>
+        public int GetMailCount(string postfach)
+        {
+            // Lokale Variablen für die Verarbeitung
+            int mailCount = 0;
+            string tmp;
+
+            // Verbindung aufbauen
+            Connect();
+
+            /*
+             * Block 1: Einloggen 
+             */
+            reader.ReadLine(); // Willkommensnachricht
+            writer.WriteLine("n" + si + " LOGIN " + ui.UserName + " " + ui.Password);
+            writer.Flush();
+            reader.ReadLine();
+            si++;
+
+            /*
+             * Block 2: Postfach auswählen
+             */
+            writer.WriteLine("n" + si + " SELECT " + postfach);
+            writer.Flush();
+
+            while (true)
+            {
+                tmp = reader.ReadLine();
+
+                // Überprüfen, ob die Zeile die Anzahl der Mails enthält
+                if (tmp.StartsWith("*") && tmp.Contains("EXISTS"))
+                {
+                    // Parse die Anzahl der Nachrichten
+                    string[] parts = tmp.Split(' ');
+                    mailCount = int.Parse(parts[1]);
+                }
+
+                // Ende der SELECT-Antwort erkennen
+                if (tmp.StartsWith("n" + si))
+                {
+                    break;
+                }
+            }
+            si++;
+
+            /*
+             * Block 3: Verbindung trennen
+             */
+            Disconnect();
+
+            return mailCount;
+        }
+
         /// <summary>
         /// Gibt zum angebenen Postfach die Informationen zurück.
         /// </summary>
@@ -119,7 +232,7 @@ namespace nMail
 
 
             // Verbindung trennen
-            disconnect();
+            Disconnect();
 
             return ausgabe;
 
@@ -127,24 +240,22 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt die Mail in dem gewählten Postfach als Mime zurück.
+        /// Gibt die Pop3Mail in dem gewählten Postfach als POP3Parser zurück.
         /// </summary>
         /// <param name="postfach">Das Postfach, das der User möchte</param>
-        /// <param name="id">Die ID der Mime-Mail</param>
+        /// <param name="id">Die ID der POP3Parser-Pop3Mail</param>
         /// <returns></returns>
-        public String getMail(String postfach, int id)
+        public String GetMail(String postfach, int id)
         {
             String tmp;
             String returnStr = "";
 
             // Conecten
             Connect();
-
             
             /*
              * Block 1: Einloggen 
              */
-
             reader.ReadLine();
             writer.WriteLine("n" + si + " LOGIN " + ui.UserName + " " + ui.Password);
             writer.Flush();
@@ -156,8 +267,6 @@ namespace nMail
             /*
              *  Block 2: Postfach wählen
              */
-
-
             writer.WriteLine("n" + si + " select " + postfach);
             writer.Flush();
             tmp = reader.ReadLine();
@@ -171,10 +280,8 @@ namespace nMail
 
 
             /*
-             *  Block 3: Mail ausgeben
+             *  Block 3: Pop3Mail ausgeben
              */
-
-
             writer.WriteLine("n" + si + " fetch " + id + " body[HEADER]");
             writer.Flush();
             tmp = reader.ReadLine();
@@ -189,10 +296,8 @@ namespace nMail
 
 
             /*
-             * Block 4: Mail-Body ausgeben
+             * Block 4: Pop3Mail-Body ausgeben
              */
-
-
             writer.WriteLine("n" + si + " fetch " + id + " body[TEXT]");
             writer.Flush();
             tmp = reader.ReadLine();
@@ -208,15 +313,11 @@ namespace nMail
             /*
              * Block 5: Verbindung und Strams Schließen 
              */
-
-
-            disconnect();
+            Disconnect();
 
             /*
-             * Ausgabe der Mime Mail 
+             * Ausgabe der POP3Parser Pop3Mail 
              */
-            
-
             return returnStr;
 
         }
@@ -224,7 +325,7 @@ namespace nMail
         /// <summary>
         /// Schließen der Verbindung
         /// </summary>
-        private void disconnect()
+        private void Disconnect()
         {
             reader.Close();
             writer.Close();

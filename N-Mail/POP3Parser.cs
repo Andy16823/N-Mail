@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace nMail
 {
-    public class Mime
+    public class POP3Parser
     {
 
         /// <summary>
@@ -14,7 +14,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public Boolean isMixedMultipart(List<String> mime)
+        public Boolean IsMixedMultipart(List<String> mime)
         {
             Boolean isMultipart = false;
 
@@ -31,11 +31,11 @@ namespace nMail
         }
         
         /// <summary>
-        /// Gibt den Contenttyp der Mail zurück
+        /// Gibt den Contenttyp der Pop3Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getContentType(List<String> mime)
+        public String GetContentType(List<String> mime)
         {
             String ContentType = "";
 
@@ -53,11 +53,11 @@ namespace nMail
         }
         
         /// <summary>
-        /// Prüft, ob die Mail vom Typ Multipart ist
+        /// Prüft, ob die Pop3Mail vom Typ Multipart ist
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public Boolean isMultipart(List<String> mime)
+        public Boolean IsMultipart(List<String> mime)
         {
             Boolean isMultipart = false;
 
@@ -73,11 +73,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// Prüft ob die Mail vom Typ Plain ist
+        /// Prüft ob die Pop3Mail vom Typ Plain ist
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public Boolean hasPlainText(List<String> mime)
+        public Boolean HasPlainText(List<String> mime)
         {
             Boolean hasPlain = false;
 
@@ -98,7 +98,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public Boolean hasHtmlText(List<String> mime)
+        public Boolean HasHtmlText(List<String> mime)
         {
 
             Boolean hasHtml = false;
@@ -116,12 +116,12 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt den Body der Mail als text/plain zurück
+        /// Gibt den Body der Pop3Mail als text/plain zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
         [Obsolete("Bitte nutzen Sie die Funktion BodyPlain")]
-        public String getBodyAsPlainText(List<String> mime)
+        public String GetBodyAsPlainText(List<String> mime)
         {
 
             String keyword = "boundary";
@@ -189,12 +189,12 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt den Body der Mail als HTML-Text zurück
+        /// Gibt den Body der Pop3Mail als HTML-Text zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
         [Obsolete("Bitte nutzen Sie die Funktion BodyHtml")]
-        public String getBodyAsHtmlText(List<String> mime)
+        public String GetBodyAsHtmlText(List<String> mime)
         {
 
             String keyword = "boundary";
@@ -269,7 +269,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getNoneMultipart(List<String> mime)
+        public String GetNoneMultipart(List<String> mime)
         {
             String bdy = "";
             int Start = 0;
@@ -303,7 +303,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getSubject(List<String> mime)
+        public String GetSubject(List<String> mime)
         {
             String subject = "";
             String[] match = null;
@@ -327,7 +327,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getSender(List<String> mime)
+        public String GetSender(List<String> mime)
         {
             String sender="";
 
@@ -348,11 +348,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt den Empfänger der Mail zurück
+        /// Gibt den Empfänger der Pop3Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getTo(List<String> mime)
+        public String GetTo(List<String> mime)
         {
             String to = "";
 
@@ -372,11 +372,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt das Empfangsdatum der Mail zurück
+        /// Gibt das Empfangsdatum der Pop3Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getDeliveryDate(List<String> mime)
+        public String GetDeliveryDate(List<String> mime)
         {
             String deliverydate = "";
 
@@ -397,11 +397,11 @@ namespace nMail
         }
 
         /// <summary>
-        /// Gibt das Sendedatum der Mail zurück
+        /// Gibt das Sendedatum der Pop3Mail zurück
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getSendDate(List<String> mime)
+        public String GetSendDate(List<String> mime)
         {
             String senddate = "";
 
@@ -425,7 +425,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public int getAttachmentCount(List<String> mime)
+        public int GetAttachmentCount(List<String> mime)
         {
             int count = 0;
 
@@ -446,9 +446,9 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public List<Attachment> getAttachments(List<String> mime, String boundary)
+        public List<Attachment> GetAttachments(List<String> mime, String boundary)
         {
-            int attachCount = getAttachmentCount(mime);
+            int attachCount = GetAttachmentCount(mime);
             List<Attachment> attach = new List<Attachment>();
             
             int z = 0;
@@ -526,21 +526,17 @@ namespace nMail
                     // Attachment der Anhangsliste übergeben
                     attach.Add(att);
                 }
-
-
                 z++;
-
             }
-
             return attach;
         }
 
         /// <summary>
-        /// Gibt die Mail im Mime-Format zurück. Sollte ein Fehler auftreten, bitte diese Funktion ausführen."
+        /// Gibt die Pop3Mail im POP3Parser-Format zurück. Sollte ein Fehler auftreten, bitte diese Funktion ausführen."
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getMimeMail(List<String> mime)
+        public String GetMimeMail(List<String> mime)
         {
             String mimestr="";
 
@@ -557,7 +553,7 @@ namespace nMail
         /// </summary>
         /// <param name="mime"></param>
         /// <returns></returns>
-        public String getBoundary(List<String> mime)
+        public String GetBoundary(List<String> mime)
         {
             String boundary = "";
 

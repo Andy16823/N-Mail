@@ -8,12 +8,31 @@ namespace nMail
     public class ImapMail
     {
         String imapMail;
-        ImapMime parser;
+        ImapParser parser;
 
         public ImapMail(String folder, UserInformation ui, int ID)
         {
-            imapMail = new ImapClient(ui).getMail(folder, ID);
-            parser = new ImapMime(imapMail);
+            imapMail = new ImapClient(ui).GetMail(folder, ID);
+            parser = new ImapParser(imapMail);
+
+            loadBoundary();
+            loadHtmlBody();
+            loadPlainBody();
+            loadNoneMultipartBody();
+            loadSender();
+            loadSubject();
+            loadDeliveryDate();
+            loadAttachments();
+            loadAttachmentCount();
+            loadHasMultipart();
+            loadHasMixedMultipart();
+            loadHasHtmlBody();
+            loadHasPlainBody();
+        }
+
+        public ImapMail(String mail)
+        {
+            parser = new ImapParser(mail);
 
             loadBoundary();
             loadHtmlBody();
@@ -50,9 +69,9 @@ namespace nMail
         /// </summary>
         private void loadBoundary()
         {
-            if(parser.hasBoundary())
+            if(parser.HasBoundary())
             {
-                this.Boundary = parser.getBoundary();
+                this.Boundary = parser.GetBoundary();
             }
         }
 
@@ -61,9 +80,9 @@ namespace nMail
         /// </summary>
         private void loadHtmlBody()
         {
-            if (parser.hasHtmlBody() && !String.IsNullOrEmpty(Boundary))
+            if (parser.HasHtmlBody() && !String.IsNullOrEmpty(Boundary))
             {
-                this.HtmlBody = parser.getBodyAsHtml(this.Boundary);
+                this.HtmlBody = parser.GetBodyAsHtml(this.Boundary);
             }
         }
 
@@ -72,37 +91,37 @@ namespace nMail
         /// </summary>
         private void loadPlainBody()
         {
-            if (parser.hasPlainBody() && !String.IsNullOrEmpty(Boundary))
+            if (parser.HasPlainBody() && !String.IsNullOrEmpty(Boundary))
             {
-                this.PlainBody = parser.getBodyAsPlain(this.Boundary);
+                this.PlainBody = parser.GetBodyAsPlain(this.Boundary);
             }
         }
 
         /// <summary>
-        /// Lädt den Body der Mail in die Eigenschaft NoneMultipartBody
+        /// Lädt den Body der Pop3Mail in die Eigenschaft NoneMultipartBody
         /// </summary>
         private void loadNoneMultipartBody()
         {
-            if (!parser.hasMultipart() && String.IsNullOrEmpty(Boundary))
+            if (!parser.HasMultipart() && String.IsNullOrEmpty(Boundary))
             {
-                this.NoneMultipartBody = parser.getTextAsNoneMultiPart();
+                this.NoneMultipartBody = parser.GetTextAsNoneMultiPart();
             }
         }
 
         /// <summary>
-        /// Lädt den Absender der Mail in die Eigenschaft Sender
+        /// Lädt den Absender der Pop3Mail in die Eigenschaft Sender
         /// </summary>
         private void loadSender()
         {
-            this.Sender = parser.getSender();
+            this.Sender = parser.GetSender();
         }
 
         /// <summary>
-        /// Lädt den Betreff der Mail in die Eigenschaft Subject
+        /// Lädt den Betreff der Pop3Mail in die Eigenschaft Subject
         /// </summary>
         private void loadSubject()
         {
-            this.Subject = parser.getSubject();
+            this.Subject = parser.GetSubject();
         }
 
         /// <summary>
@@ -110,7 +129,7 @@ namespace nMail
         /// </summary>
         private void loadDeliveryDate()
         {
-            this.DeliveryDate = parser.getDeliveryDate();
+            this.DeliveryDate = parser.GetDeliveryDate();
         }
 
         /// <summary>
@@ -118,9 +137,9 @@ namespace nMail
         /// </summary>
         private void loadAttachments()
         {
-            if (parser.hasAttachments() && !String.IsNullOrEmpty(Boundary))
+            if (parser.HasAttachments() && !String.IsNullOrEmpty(Boundary))
             {
-                this.Attachments = parser.getAttachments(this.Boundary);
+                this.Attachments = parser.GetAttachments(this.Boundary);
             }
         }
 
@@ -129,42 +148,42 @@ namespace nMail
         /// </summary>
         private void loadAttachmentCount()
         {
-            if (parser.hasAttachments())
+            if (parser.HasAttachments())
             {
-                this.AttachmentCount = parser.getAttachmentCount();
+                this.AttachmentCount = parser.GetAttachmentCount();
             }
         }
 
         /// <summary>
-        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Mail vom Typ Multipart ist
+        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Pop3Mail vom Typ Multipart ist
         /// </summary>
         private void loadHasMultipart()
         {
-            this.HasMultipart = parser.hasMultipart();
+            this.HasMultipart = parser.HasMultipart();
         }
 
         /// <summary>
-        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Mail vom Typ MixedMultipart ist
+        /// Lädt den Wert in die Eigenschaft HasMultipart, der angibt, ob die Pop3Mail vom Typ MixedMultipart ist
         /// </summary>
         private void loadHasMixedMultipart()
         {
-            this.HasMixedMultipart = parser.hasMixedMultipart();
+            this.HasMixedMultipart = parser.HasMixedMultipart();
         }
 
         /// <summary>
-        /// Lädt den Wert in die Eigenschaft HasHtmlBody, der angibt, ob die Mail einen HTML-Body besitzt
+        /// Lädt den Wert in die Eigenschaft HasHtmlBody, der angibt, ob die Pop3Mail einen HTML-Body besitzt
         /// </summary>
         private void loadHasHtmlBody()
         {
-            this.HasHtmlBody = parser.hasHtmlBody();
+            this.HasHtmlBody = parser.HasHtmlBody();
         }
 
         /// <summary>
-        /// Lädt den Wert in die Eigenschaft HasPlainBody, der angibt, ob die Mail einen Plain-Body besitzt
+        /// Lädt den Wert in die Eigenschaft HasPlainBody, der angibt, ob die Pop3Mail einen Plain-Body besitzt
         /// </summary>
         private void loadHasPlainBody()
         {
-            this.HasPlainBody = parser.hasPlainBody();
+            this.HasPlainBody = parser.HasPlainBody();
         }
 
     }

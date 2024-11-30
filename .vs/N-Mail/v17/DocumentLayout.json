@@ -1,0 +1,123 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|c:\\users\\andy\\documents\\github\\n-mail\\n-mail\\pop3mail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|solutionrelative:n-mail\\pop3mail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|c:\\users\\andy\\documents\\github\\n-mail\\n-mail\\imapparser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|solutionrelative:n-mail\\imapparser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|c:\\users\\andy\\documents\\github\\n-mail\\n-mail\\imapmail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|solutionrelative:n-mail\\imapmail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|c:\\users\\andy\\documents\\github\\n-mail\\n-mail\\pop3parser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|solutionrelative:n-mail\\pop3parser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|c:\\users\\andy\\documents\\github\\n-mail\\n-mail\\imapclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0096F717-5D7C-4BA2-8FAF-5BA9345DEB05}|N-Mail\\N-Mail.csproj|solutionrelative:n-mail\\imapclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|N-Mail||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{dcc4ea97-1c0c-482b-b205-e541c0df9728}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "POP3Parser.cs",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\POP3Parser.cs",
+              "RelativeDocumentMoniker": "N-Mail\\POP3Parser.cs",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\POP3Parser.cs",
+              "RelativeToolTip": "N-Mail\\POP3Parser.cs",
+              "ViewState": "AQIAAI0CAAAAAAAAAAAowCsCAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-30T01:07:36.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ImapParser.cs",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapParser.cs",
+              "RelativeDocumentMoniker": "N-Mail\\ImapParser.cs",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapParser.cs",
+              "RelativeToolTip": "N-Mail\\ImapParser.cs",
+              "ViewState": "AQIAAN8BAAAAAAAAAIAwwPMBAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-30T01:06:32.573Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ImapMail.cs",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapMail.cs",
+              "RelativeDocumentMoniker": "N-Mail\\ImapMail.cs",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapMail.cs",
+              "RelativeToolTip": "N-Mail\\ImapMail.cs",
+              "ViewState": "AQIAAFsAAAAAAAAAAAAcwHMAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-30T00:53:30.523Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ImapClient.cs",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapClient.cs",
+              "RelativeDocumentMoniker": "N-Mail\\ImapClient.cs",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\ImapClient.cs",
+              "RelativeToolTip": "N-Mail\\ImapClient.cs",
+              "ViewState": "AQIAAOwAAAAAAAAAAAAAwLMAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T19:53:44.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "N-Mail",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\N-Mail.csproj",
+              "RelativeDocumentMoniker": "N-Mail\\N-Mail.csproj",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\N-Mail.csproj",
+              "RelativeToolTip": "N-Mail\\N-Mail.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-11-29T19:47:12.358Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Pop3Mail.cs",
+              "DocumentMoniker": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\Pop3Mail.cs",
+              "RelativeDocumentMoniker": "N-Mail\\Pop3Mail.cs",
+              "ToolTip": "C:\\Users\\Andy\\Documents\\GitHub\\N-Mail\\N-Mail\\Pop3Mail.cs",
+              "RelativeToolTip": "N-Mail\\Pop3Mail.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-29T19:40:05.814Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

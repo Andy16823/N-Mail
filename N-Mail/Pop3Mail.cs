@@ -5,11 +5,11 @@ using System.Text;
 
 namespace nMail
 {
-    public class Mail
+    public class Pop3Mail
     {
         public List<String> list;
 
-        public Mail(UserInformation ui, int id)
+        public Pop3Mail(UserInformation ui, int id)
         {
             list = new PopClient().getMail(ui, id);
             getBoundary();
@@ -23,7 +23,6 @@ namespace nMail
             setHasMixedMultipart();
             getAttachmentCount();
             getAttachments();
-
         }
 
 
@@ -50,8 +49,8 @@ namespace nMail
         /// </summary>
         private void getBoundary()
         {
-            Mime parser = new Mime();
-            this.Boundary = parser.getBoundary(list);
+            POP3Parser parser = new POP3Parser();
+            this.Boundary = parser.GetBoundary(list);
             
         }
 
@@ -60,11 +59,11 @@ namespace nMail
         /// </summary>
         private void setHtmlBody()
         {
-            Mime parser = new Mime();
-            if (parser.hasHtmlText(list) == true && this.Boundary != null)
+            POP3Parser parser = new POP3Parser();
+            if (parser.HasHtmlText(list) == true && this.Boundary != null)
             {
                 this.hasHTMLBody = true;
-                this.BodyAsHtml = parser.HtmlBody(list, parser.getBoundary(list));
+                this.BodyAsHtml = parser.HtmlBody(list, parser.GetBoundary(list));
             }
         }
 
@@ -73,8 +72,8 @@ namespace nMail
         /// </summary>
         private void setPlainBody()
         {
-            Mime parser = new Mime();
-            if (parser.hasPlainText(list) == true && this.Boundary != null)
+            POP3Parser parser = new POP3Parser();
+            if (parser.HasPlainText(list) == true && this.Boundary != null)
             {
                 this.hasPlainTextBody = true;
                 this.BodyAsPlainText = parser.PlainBody(list, this.Boundary);
@@ -86,21 +85,21 @@ namespace nMail
         /// </summary>
         private void setNoneMultipart()
         {
-            Mime parser = new Mime();
+            POP3Parser parser = new POP3Parser();
 
-            if (parser.isMultipart(list) == false)
+            if (parser.IsMultipart(list) == false)
             {
-                this.BodyAsNoneMultipart = parser.getNoneMultipart(list);
+                this.BodyAsNoneMultipart = parser.GetNoneMultipart(list);
             }
         }
 
         /// <summary>
-        /// Setzt den Betreff der Mail
+        /// Setzt den Betreff der Pop3Mail
         /// </summary>
         private void setSubject()
         {
-            Mime parser = new Mime();
-            this.Subject = parser.getSubject(list);
+            POP3Parser parser = new POP3Parser();
+            this.Subject = parser.GetSubject(list);
         }
 
         /// <summary>
@@ -108,8 +107,8 @@ namespace nMail
         /// </summary>
         private void setFrom()
         {
-            Mime parser = new Mime();
-            this.From = parser.getSender(list);
+            POP3Parser parser = new POP3Parser();
+            this.From = parser.GetSender(list);
         }
 
         /// <summary>
@@ -117,23 +116,23 @@ namespace nMail
         /// </summary>
         private void setReceiver()
         {
-            this.Receiver = new Mime().getTo(list);
+            this.Receiver = new POP3Parser().GetTo(list);
         }
 
         /// <summary>
-        /// Setzt die Eigenschaft hasMultipart
+        /// Setzt die Eigenschaft HasMultipart
         /// </summary>
         private void setHasMultipart()
         {
-            this.hasMultipart = new Mime().isMultipart(list);
+            this.hasMultipart = new POP3Parser().IsMultipart(list);
         }
 
         /// <summary>
-        /// Setzt die Eigenschaft hasMixedMultipart
+        /// Setzt die Eigenschaft HasMixedMultipart
         /// </summary>
         private void setHasMixedMultipart()
         {
-            this.hasMixedMultipart = new Mime().isMixedMultipart(list);
+            this.hasMixedMultipart = new POP3Parser().IsMixedMultipart(list);
         }
 
         /// <summary>
@@ -141,8 +140,8 @@ namespace nMail
         /// </summary>
         private void getAttachmentCount()
         {
-            Mime parser = new Mime();
-            this.AttachmentCount = parser.getAttachmentCount(list);
+            POP3Parser parser = new POP3Parser();
+            this.AttachmentCount = parser.GetAttachmentCount(list);
         }
 
         /// <summary>
@@ -150,11 +149,11 @@ namespace nMail
         /// </summary>
         private void getAttachments()
         {
-            Mime parser = new Mime();
+            POP3Parser parser = new POP3Parser();
 
-            if (parser.getAttachmentCount(list) != 0)
+            if (parser.GetAttachmentCount(list) != 0)
             {
-                this.Attachments = parser.getAttachments(list,this.Boundary);
+                this.Attachments = parser.GetAttachments(list,this.Boundary);
             }
             
         }
